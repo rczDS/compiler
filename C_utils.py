@@ -1,5 +1,5 @@
 # C 中的gets函数
-gets_py='''
+gets_py = '''
 def gets_0(s):
     s_in = input()
     for i, c in enumerate(s_in):
@@ -20,16 +20,6 @@ def printf_0(format, *args):
             arg = s
         new_args.append(arg) 
     print(format % tuple(new_args), end='')
-'''
-
-# C中的system函数
-system_py = '''
-def system_0(s):
-    if not isinstance(s, str):
-        s = filter(lambda x: x != 0, s)
-        s = ''.join(s)
-    import os
-    os.system(s)
 '''
 
 # C 中的strlen函数，这里通过None判断数组末尾
@@ -61,18 +51,4 @@ def atoi_0(s):
         return sum
 '''
 
-# C 中的atof函数
-atof_py = '''
-def atof_0(s):
-    if isinstance(s, str):
-        return int(s)
-    else:
-        mstr = ''
-        for i in s:
-            if i is None:
-                break
-            mstr += i
-        return float(mstr)
-'''
-
-c_utils = [strlen_py, gets_py, printf_py, system_py, atoi_py, atof_py]
+c_utils = [strlen_py, gets_py, printf_py, atoi_py]
