@@ -1,11 +1,17 @@
 # compiler
 
 pre_post_process--预处理
+
 lex--词法分析
+
 yacc--语法分析
+
 AST--语法分析树
+
 translate--语义分析、代码生成
+
 C_utils--C函数预定义 
+
 C2P--入口文件
 
 # requirements
