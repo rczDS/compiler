@@ -1,12 +1,15 @@
+# coding=utf-8
 
+# 非终结符: ASTInternalNode
+# 终结符: ASTExternalNode
+
+# 基础节点
 class ASTNode:
     def __init__(self, key):
         self.key = str(key)
 
 
-# 抽象语法树 内部结点类
-# self.key {String}  符号类型
-# self.children {List of ASTInternalNode or ASTExternalNode}  子结点列表
+# 内部节点：key，children
 class ASTInternalNode(ASTNode):
     def __init__(self, key, children):
         ASTNode.__init__(self, key)
@@ -19,9 +22,7 @@ class ASTInternalNode(ASTNode):
         return ' '.join(map(str, self.children))
 
 
-# 抽象语法树 外部结点类
-# self.key {String}  符号类型
-# self.value {String}  终结符-值
+# 外部结点：key, value
 class ASTExternalNode(ASTNode):
     def __init__(self, key, value):
         ASTNode.__init__(self, key)
@@ -29,3 +30,4 @@ class ASTExternalNode(ASTNode):
 
     def __str__(self):
         return self.value
+

@@ -1,4 +1,3 @@
-from enum import Enum, unique
 import ply.lex as lex
 from ply.lex import TOKEN
 
@@ -7,9 +6,6 @@ tokens = (
     'CONSTANT',
     'STRING_LITERAL',
     'IDENTIFIER',
-    'ELLIPSIS',
-    'RIGHT_ASSIGN',
-    'LEFT_ASSIGN',
     'ADD_ASSIGN',
     'SUB_ASSIGN',
     'MUL_ASSIGN',
@@ -32,7 +28,6 @@ tokens = (
 )
 
 reserved = {
-    'auto': 'AUTO',
     'break': 'BREAK',
     'bool': 'BOOL',
     'case': 'CASE',
@@ -43,38 +38,20 @@ reserved = {
     'do': 'DO',
     'double': 'DOUBLE',
     'else': 'ELSE',
-    'enum': 'ENUM',
-    'extern': 'EXTERN',
-    'float': 'FLOAT',
     'for': 'FOR',
-    'goto': 'GOTO',
     'if': 'IF',
     'inline': 'INLINE',
     'int': 'INT',
-    'long': 'LONG',
-    'register': 'REGISTER',
-    'restrict': 'RESTRICT',
     'return': 'RETURN',
-    'short': 'SHORT',
-    'signed': 'SIGNED',
     'sizeof': 'SIZEOF',
-    'static': 'STATIC',
-    'struct': 'STRUCT',
     'switch': 'SWITCH',
-    'typedef': 'TYPEDEF',
-    'union': 'UNION',
-    'unsigned': 'UNSIGNED',
     'void': 'VOID',
-    'volatile': 'VOLATILE',
     'while': 'WHILE',
 }
 tokens = tokens + tuple(reserved.values())
 
 literals = ';,:=.&![]{}~()+-*/%><^|?'
 
-t_ELLIPSIS = r'\.\.\.'
-t_RIGHT_ASSIGN = r'>>='
-t_LEFT_ASSIGN = r'<<='
 t_ADD_ASSIGN = r'\+='
 t_SUB_ASSIGN = r'-='
 t_MUL_ASSIGN = r'\*='
@@ -95,20 +72,15 @@ t_GE_OP = r'>='
 t_EQ_OP = r'=='
 t_NE_OP = r'!='
 
-D = r'[0-9]'
-H = r'[0-9a-fA-F]'
-L = r'([_a-zA-Z])'
-E = r'[Ee][+-]?[0-9]+'
-FS = r'(f|F|l|L)'
-IS = r'(u|U|l|L)*'
+number = r'[0-9]'
+letter = r'([_a-zA-Z])'
 
 boolean = r'(true|false)'
-integer = r'(0?%s+%s?|0[xX]%s+%s?|%s+%s%s?)' % (D, IS, H, IS, D, E, FS)
-decimal = r'((%s+\.%s*(%s)?%s?)|(%s*\.%s+(%s)?%s?))' % (D, D, E, FS, D, D, E, FS)
+integer = r'(0?%s+)' % number
 char = r'(\'(\\.|[^\\\'])+\')'
-constant = r'(%s|%s|%s|%s)' % (decimal, integer, char, boolean)
+constant = r'(%s|%s|%s)' % (integer, char, boolean)
 string_literal = r'"(\\.|[^\\"])*"'
-identifier = r'(%s(%s|%s)*)' % (L, D, L)
+identifier = r'(%s(%s|%s)*)' % (letter, number, letter)
 
 
 @TOKEN(constant)
@@ -128,7 +100,7 @@ def t_IDENTIFIER(t):
 
 
 def t_newline(t):
-    r'\n+'
+    r"""\n+"""
     t.lexer.lineno += len(t.value)
 
 
@@ -136,7 +108,7 @@ t_ignore = ' \t\v\f'
 
 
 def t_COMMENT(t):
-    r'//[^\n]*'
+    r"""//[^\n]*"""
     pass
 
 
@@ -147,18 +119,18 @@ def t_error(t):
 
 lexer = lex.lex()
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     while True:
         try:
-            filename = input("please input filename: ")
+            filename = input('filename(lex): ')
             with open(filename, 'r') as file:
                 data = file.read()
                 lexer.input(data)
-                while True:
-                    tok = lexer.token()
-                    if not tok:
-                        break
-                    print(tok)
+            while True:
+                tok = lexer.token()
+                if not tok:
+                    break
+                print(tok)
         except EOFError:
             break
-
